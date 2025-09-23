@@ -1,7 +1,7 @@
 from colorama import Fore
 from terminaltables import AsciiTable
 
-db = {"fleet": [], "shipments": [], "deliveries": []}
+db = {"fleet": [], "customers": [], "shipments": [], "deliveries": []}
 
 
 def insert_vehicle(obj):
@@ -36,3 +36,28 @@ def list_vehicles():
 
     table = AsciiTable(table_data)
     print(table.table)
+
+
+def insert_customer(obj):
+    db["customers"].append(obj)
+    print(
+        Fore.GREEN + f"Customer {obj.name} with id {obj.id} was successfully created."
+    )
+
+
+def retrieve_customer(id):
+    for obj in db["customers"]:
+        if obj.id == id:
+            return obj
+
+    raise ValueError(Fore.RED + "No Customer found with this ID")
+
+def delete_customer(id):
+    for index, obj in enumerate(db["customers"]):
+        if obj.id == id:
+            db["customers"].pop(index)
+            print(Fore.GREEN + "Customer successfully removed")
+
+
+def list_customers():
+    return db["customers"]
