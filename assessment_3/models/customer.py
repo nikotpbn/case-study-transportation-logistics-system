@@ -27,7 +27,7 @@ class Customer:
         delete_customer(self.id)
 
     def to_list(self):
-        [self.id, self.name, self.address, self.phone_number, self.email]
+        return [self.id, self.name, self.address, self.phone_number, self.email]
 
     @classmethod
     def all(cls):
@@ -35,4 +35,4 @@ class Customer:
 
     @classmethod
     def exists(cls, id):
-        retrieve_customer()
+        return retrieve_customer(id)

@@ -1,13 +1,3 @@
-"""
-Customer module without shipments and no testing
-took 1:38:48
-
-For a cleaner code one can move validators
-inside the object which would be according
-to the DRY principle. Although its implemented
-this way for assessment flow.
-"""
-
 from models.customer import Customer
 from terminaltables import AsciiTable
 
@@ -30,7 +20,8 @@ def management():
         "2.5": "View a customer's shipments",
         "2.6": "Quit customer management.",
     }
-
+    print("\n--- Case Study: Customer Management  ---")
+    print("Select a task to perform:")
     [print(f"{key} - {value}") for key, value in options.items()]
     choice = input("Choose an option:")
 
@@ -63,13 +54,15 @@ def add_customer():
         # Prompt the user to enter unique Customer ID (e.g., ABC123)
         data["id"] = input("Enter Customer ID: ").strip()
         data["name"] = input("Enter Customer Name: ")
-        data["dob"] = input("Enter Customer Date of Birth: ").strip()  # DD/MM/YYYY
+        data["dob"] = input(
+            "Enter Customer Date of Birth (DD/MM/YYYY): "
+        ).strip()  # DD/MM/YYYY
         data["address"] = input("Enter Customer Address: ")
         data["phone_number"] = input("Enter Customer Phone Number: ").strip()
         data["email"] = input("Enter Customer Email: ").strip()
 
         validate_customer_id(data["id"])
-        year_of_birth = validate_dob("dob")
+        year_of_birth = validate_dob(data["dob"])
         is_of_age(year_of_birth)
         validate_australian_address(data["address"])
         validate_customer_phone_number(data["phone_number"])
@@ -86,6 +79,7 @@ def update_customer():
     data = {}
     try:
         customer = Customer.exists(input("Enter Customer ID: ").strip())
+        print(customer)
 
         data["name"] = input("Enter Customer Name: ")
         data["dob"] = input("Enter Customer Date of Birth: ").strip()
@@ -93,7 +87,7 @@ def update_customer():
         data["phone_number"] = input("Enter Customer Phone Number: ").strip()
         data["email"] = input("Enter Customer Email: ").strip()
 
-        year_of_birth = validate_dob("dob")
+        year_of_birth = validate_dob(data["dob"])
         is_of_age(year_of_birth)
         validate_australian_address(data["address"])
         validate_customer_phone_number(data["phone_number"])
@@ -117,10 +111,11 @@ def remove_customer():
 
 
 def list_customers():
-    table_data = ["ID", "Name", "Address", "Number", "Email"]
+    table_data = [
+        ["ID", "Name", "Address", "Number", "Email"],
+    ]
 
     customers = Customer.all()
-
     [table_data.append(obj.to_list()) for obj in customers]
     table = AsciiTable(table_data)
     print(table.table)

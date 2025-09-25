@@ -24,7 +24,7 @@ class Vehicle:
         insert_vehicle(self)
 
     def update(self, *args, **kwargs):
-        self.type = kwargs["type"]
+        self.type = self.get_vehicle_name(kwargs["type"])
         self.capacity = kwargs["capacity"]
 
         print(Fore.GREEN + "Instance updated successfully")

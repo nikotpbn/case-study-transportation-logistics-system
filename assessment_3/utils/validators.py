@@ -2,6 +2,8 @@ import re
 from datetime import datetime, date
 from colorama import Fore, Style
 
+from models.vehicle import Vehicle
+from models.customer import Customer
 
 """
 General Validators
@@ -78,12 +80,12 @@ def validate_dob(dob):
     regex = re.compile("[0-9]{2}/[0-9]{2}/[0-9]{4}")
     result = regex.match(dob)
 
-    if not result or len(result) != 12:
+    if not result or result.end() != 10:
         raise ValueError(
             Fore.RED + "Date of birth should be in the following format: DD/MM/YYYY"
         )
 
-    d = datetime.strptime(dob, "%d\/%m\/%Y").date()
+    d = datetime.strptime(dob, "%d/%m/%Y").date()
     if d >= date(1920, 1, 1):
         return d.year
 
@@ -97,21 +99,19 @@ def is_of_age(yob):
         raise ValueError(Fore.RED + "Customer must be at leasst 18 years old")
 
 
-def validate_australian_address(email):
+def validate_australian_address(address):
     """
     51 Jacobson St
     BRISBANE QLD 4000
     """
-    clean_email = email.replace(",", "")
-
-    to_validate = clean_email.strip()
-    regex = re.compile("[0-9]+[a-zA-Z]+[0-9]{4}$")
-    result = regex.match(to_validate)
+    clean_address = address.replace(",", "").replace(" ", "")
+    regex = re.compile("[0-9]+[a-zA-Z]+[0-9]{4}Australia$")
+    result = regex.match(clean_address)
 
     if not result:
         raise ValueError(Fore.RED + "This address is not valid")
 
-    return clean_email
+    return clean_address
 
 
 def validate_customer_phone_number(phone_number):
@@ -121,7 +121,7 @@ def validate_customer_phone_number(phone_number):
     if not phone_number.isdigit():
         raise ValueError(Fore.RED + "Phone number must be numeric")
 
-    if not result or len(result) != 10:
+    if not result or result.end() != 10:
         raise ValueError(Fore.RED + "Phone number must have 10 digits")
 
 
@@ -151,3 +151,18 @@ def validate_customer_email_address(value):
 
     if not result:
         raise ValueError(Fore.RED + "This email address is invalid")
+
+
+"""
+Shipment Validators
+(All in one)
+"""
+
+
+def validate_shipment(**data):
+    if not re.fullmatch("S[0-9]{3}", data.get("id")):
+        raise ValueError(Fore.RED + "Invalid shipment ID")
+
+    validate_positive_integer(data.get("weight"))
+    Vehicle.exists_in_fleet(data.get("vehicle"))
+    # Customer.exists(data.get("customer")) why validate this if not asked input

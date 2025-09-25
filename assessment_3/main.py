@@ -1,5 +1,17 @@
+"""
+About 7h of work
+"""
+
+import sys
+
 from colorama import init
+
 from controllers.fleet import management as fleet_management
+from controllers.customer import management as customer_management
+from controllers.shipment import management as shipment_management
+from controllers.delivery import management as delivery_management
+
+from utils.seeds import seed
 
 init(autoreset=True)
 
@@ -20,10 +32,12 @@ def main_menu():
     match choice:
         case "1":
             fleet_management()
-        # case "2":
-        #     shipment_management()
-        # case "3":
-        #     delivery_management()
+        case "2":
+            customer_management()
+        case "3":
+            shipment_management()
+        case "4":
+            delivery_management()
         case "0":
             quit_application()
         case _:
@@ -37,5 +51,16 @@ def quit_application():
 
 
 if __name__ == "__main__":
+    """
+    To seed values in mem.
+    python main.py --seed
+    """
+    try:
+        arg = sys.argv[1]
+        if arg == "--seed":
+            seed()
+    except:
+        pass
+
     while True:
         main_menu()

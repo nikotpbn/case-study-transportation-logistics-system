@@ -1,7 +1,17 @@
 from colorama import Fore
 from terminaltables import AsciiTable
 
-db = {"fleet": [], "customers": [], "shipments": [], "deliveries": []}
+
+db = {
+    "fleet": [],
+    "customers": [],
+    "shipments": [],
+    "deliveries": [],
+}
+
+"""
+Vehicle Operations
+"""
 
 
 def insert_vehicle(obj):
@@ -38,6 +48,11 @@ def list_vehicles():
     print(table.table)
 
 
+"""
+Customer Operations
+"""
+
+
 def insert_customer(obj):
     db["customers"].append(obj)
     print(
@@ -52,6 +67,7 @@ def retrieve_customer(id):
 
     raise ValueError(Fore.RED + "No Customer found with this ID")
 
+
 def delete_customer(id):
     for index, obj in enumerate(db["customers"]):
         if obj.id == id:
@@ -61,3 +77,46 @@ def delete_customer(id):
 
 def list_customers():
     return db["customers"]
+
+
+"""
+Shipment Operations
+"""
+
+
+def insert_shipment(obj):
+    db["shipments"].append(obj)
+    print(Fore.GREEN + f"Shipment {obj.id} was successfully created.")
+
+
+def retrieve_shipment(id):
+    for obj in db["shipments"]:
+        if obj.id == id:
+            return obj
+
+    raise ValueError(Fore.RED + "No Shipment found with this ID")
+
+
+def list_shipments():
+    return db["shipments"]
+
+
+"""
+Delivery Operations
+"""
+
+
+def insert_delivery(obj):
+    db["deliveries"].append(obj)
+    print(
+        Fore.GREEN
+        + f"Delivery of shipment {obj.shipment.id} was successfully recorded."
+    )
+
+
+def retrieve_delivery(shipment):
+    for obj in db["deliveries"]:
+        if obj.shipment.id == shipment.id:
+            return obj
+
+    raise ValueError(Fore.YELLOW + "Delivery for this shipment is still In Transit")

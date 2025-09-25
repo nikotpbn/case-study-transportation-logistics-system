@@ -1,9 +1,3 @@
-"""
-1:36:24 for this one so far
-+ 0:25:45 + 0:35:15
-remodeling with tests
-"""
-
 from models.vehicle import Vehicle
 from utils.validators import (
     validate_positive_integer,
@@ -22,7 +16,8 @@ def management():
         "1.5": " Quit fleet management",
         "1.6": "Clear Screen",
     }
-
+    print("\n--- Case Study: Fleet Management  ---")
+    print("Select a task to perform:")
     [print(f"{key} - {value}") for key, value in options.items()]
     choice = input("Choose an option:")
 
