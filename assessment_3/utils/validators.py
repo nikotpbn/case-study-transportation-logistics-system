@@ -130,24 +130,9 @@ def validate_customer_email_address(value):
     A very simple email regex that validates the address
     is all lower case. It accepts numbers and three special
     characters in the first part.
-
-    IMPORTANT: everything must be casted to lower case.
-
-    Test Example:
-    emails = ["john@example.com",
-    "john.doe@test.org",
-    "mary_2002@example.uk",
-    "jane-2001@test.pt",
-    "smith@example.net",
-    "smith@own-org.net",
-    "not_valid@test.x",
-    "not$valid@example.com",
-    "1nv@l1d@example.net"]
-    for email in emails:
-        return True if regex.match(email) else False
     """
-    regex = re.compile("[a-z0-9._-]+@[a-z]+\\.[a-z]{2,3}")
-    result = regex.match(value)
+    regex = re.compile("[a-z0-9._-]+@[a-z-]+\\.[a-z]{2,3}")
+    result = regex.match(value.lower())
 
     if not result:
         raise ValueError(Fore.RED + "This email address is invalid")

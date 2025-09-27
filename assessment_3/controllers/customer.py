@@ -59,7 +59,7 @@ def add_customer():
         ).strip()  # DD/MM/YYYY
         data["address"] = input("Enter Customer Address: ")
         data["phone_number"] = input("Enter Customer Phone Number: ").strip()
-        data["email"] = input("Enter Customer Email: ").strip()
+        data["email"] = input("Enter Customer Email: ").strip().lower()
 
         validate_customer_id(data["id"])
         year_of_birth = validate_dob(data["dob"])
