@@ -84,3 +84,37 @@ def numbers():
         "positives": 2,
         "negatives": 7,
     }
+
+
+@pytest.fixture
+def shipments():
+    return {
+        "test_data": [
+            "S001",
+            "S123",
+            "1SHP",
+            "1234",
+            "S12",
+            "SS123",
+            "SS12",
+            "SHP001",
+        ],
+        "positives": 2,
+        "negatives": 6,
+    }
+
+
+@pytest.fixture
+def integers():
+    return {
+        "test_data": [
+            1,
+            100,
+            -10,
+            -1,
+            0,
+            "10",
+        ],
+        "positives": 2,
+        "negatives": 4,
+    }

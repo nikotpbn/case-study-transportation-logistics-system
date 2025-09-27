@@ -11,7 +11,7 @@ General Validators
 
 
 def validate_positive_integer(value):
-    if not value.isdecimal() or not int(value) > 0:
+    if not isinstance(value, int) or value <= 0:
         raise ValueError(Fore.RED + "Value must be a positive number")
 
 
@@ -144,10 +144,13 @@ Shipment Validators
 """
 
 
-def validate_shipment(**data):
-    if not re.fullmatch("S[0-9]{3}", data.get("id")):
+def validate_shipment_id(value):
+    if not re.fullmatch("S[0-9]{3}", value):
         raise ValueError(Fore.RED + "Invalid shipment ID")
 
+
+def validate_shipment(**data):
+    validate_shipment_id(data.get("id"))
     validate_positive_integer(data.get("weight"))
     Vehicle.exists_in_fleet(data.get("vehicle"))
     # Customer.exists(data.get("customer")) why validate this if not asked input
